@@ -1,0 +1,12 @@
+- target:
+    url: http://localhost:80/
+    method: GET
+    header:
+      X-Requested-By:
+        - rtapi
+  query_parameters:
+    threads: 2
+    max_threads: 2
+    connections: 12
+    duration: 10s
+    request_rate: 500
