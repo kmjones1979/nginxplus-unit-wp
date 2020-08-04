@@ -1,0 +1,72 @@
+{
+  "listeners": {
+    "*:8080": {
+      "pass": "routes/wordpress"
+    }
+  },
+  "routes": {
+    "wordpress": [
+      {
+        "match": {
+          "uri": [
+            "*.php",
+            "*.php/*",
+            "/wp-admin/"
+          ]
+        },
+        "action": {
+          "pass": "applications/wordpress/direct"
+        }
+      },
+      {
+        "action": {
+          "share": "/var/apphome/wordpress",
+          "fallback": {
+            "pass": "applications/wordpress/index"
+          }
+        }
+      }
+    ]
+  },
+  "applications": {
+    "wordpress": {
+      "type": "php",
+      "user": "wordpress",
+      "group": "wordpress",
+      "targets": {
+        "direct": {
+          "root": "/var/apphome/wordpress"
+        },
+        "index": {
+          "root": "/var/apphome/wordpress",
+          "script": "index.php"
+        }
+      },
+      "options": {
+        "file": "/etc/php.ini",
+        "admin": {
+          "upload_max_filesize": "20M",
+          "expose_php": "0"
+        }
+      }
+    }
+  },
+  "settings": {
+    "http": {
+      "header_read_timeout": 10,
+      "body_read_timeout": 10,
+      "send_timeout": 10,
+      "idle_timeout": 120,
+      "max_body_size": 6291456,
+      "static": {
+        "mime_types": {
+          "text/plain": [
+            ".log",
+            "README",
+            "CHANGES"
+          ]
+        }
+      }
+    }
+  }
+}
